@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>JacksonPollock色彩图谱</title>
+    <style>
+        #mainColor{
+            position: fixed;
+            top: 12px;
+            left: 2%;
+        }
+        #mainColor #title{
+            color: white;
+            text-align: center;
+            font-size: 32px;
+            font-weight: 300;
+            padding: 12px;
+            border-radius: 3px;
+            margin: 0
+        }
+
+        #info {
+
+            text-align: center;
+            font-size: 32px;
+            font-weight: 300;
+            padding: 12px;
+            border-radius: 3px;
+            color:white;
+        }
+
+        #otherColors {
+            text-align: center;
+            font-size: 18px;
+            font-weight: 300;
+            padding: 12px;
+            border-radius: 3px;
+        }
+
+        #mixlab {
+            position: fixed;
+            bottom: 2%;
+            right: 2%;
+            font-size: 24px;
+            color: white;
+            font-weight: 300;
+            width: 12%;
+            min-width: 280px;
+            z-index: 999;
+        }
+
+        #img_containner{
+            position: fixed;
+            bottom: 2%;
+            left: 2%;
+            font-size: 24px;
+            color: white;
+            font-weight: 300;
+            
+            z-index: 999;
+        }
+        #img_related{
+            display: flex;
+            height: 98px;
+        }
+        #img_related img{
+            width: 98px;
+            height: auto;
+            margin: 4px;
+        }
+        #mask{
+            position:fixed;
+            top:0;
+            left:0;
+            height: 100vh;
+            width: 100%;
+            background-color: #eee;
+            z-index: 999999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            text-align: center;
+        }
+
+    </style>
+    <script src="https://unpkg.com/ml5@0.1.1/dist/ml5.min.js" type="text/javascript"></script>
+    <script src="https://cdn.bootcss.com/echarts/4.1.0.rc2/echarts.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+</head>
+
+
+<body style="background:black">
+    <div id="main" style="width:100%;height:80vh;background:black"></div>
+    <div id="mainColor">
+        <h4 id="title">色彩图谱</h4>
+        <div id="info"></div>
+        <div id="otherColors"></div>
+    </div>
+
+    <img id="mixlab" src="./img/mixlab-logo.png">
+    <div id="img_containner">
+            <h4 >画作</h4>
+            <div id="img_related"></div>
+    </div>
+
+    <div id="mask">
+        <h2>请使用PC端体验</h2>
+        
+        <p>mixlab无界社区<br>出品</p>
+    </div>
+   
+    <script>
+
+        if ($(window).width()<520) {
+            $('#mask').show();
+        }else{
+            $('#mask').hide();
+        };
+
+        const word2Vec = ml5.word2vec('./data/color2vec.json', function (e) {
+                // console.log(e)
+            });
+
+        var myChart = echarts.init(document.getElementById('main'));
+
+        $.getJSON('./data/graph.json', function (graph) {
+
+            console.log(graph)
+
+            document.querySelector('#info').innerText='节点：'+graph.nodes.length+'个，关系：'+graph.links.length+'组';
+
+            var categories = [];
+            for (var i = 0; i < graph.nodes.length; i++) {
+                categories[i] = {
+                    name: graph.nodes[i].name,
+                    itemStyle: {
+                        color: graph.nodes[i].color
+                    }
+                };
+            }
+
+            var nodesNew = [];
+
+            var nodesObj = {};
+
+            graph.links.forEach(function (link) {
+                link.lineStyle = { color: 'rgba(255,255,255,0.2)', width: 0.5, type: 'solid' };
+            });
+
+            graph.nodes.forEach(function (node) {
+
+                if (node.size > 0) {
+                    var minSize = 35;
+                    node.symbolSize = Math.max(node.size * 4, 5);
+                    // console.log(node.symbolSize)
+                    node.itemStyle = {
+                        normal: {
+                            borderColor: 'rgba(255,255,255,0.5)',
+                            borderWidth: 0.1,
+                            show: node.symbolSize > minSize
+                        }
+                    };
+
+                    node.value = node.size;
+                    node.label = {
+                        normal: {
+                            color: 'rgba(255,255,255,0.6)',
+                            show: false
+                        }
+                    };
+                    // Use random x, y
+                    node.x = node.y = null;
+                    node.draggable = true;
+
+                    node.category = node.name;
+
+                    if (node.symbolSize > 0) {
+                        nodesNew.push(node);
+                        nodesObj[node.id] = {
+                            color: node.color,
+                            name: node.name
+                        }
+                    }
+
+
+                }
+
+
+            });
+
+            
+            graph.nodes = nodesNew;
+
+            option = {
+
+                tooltip: {
+                    enterable: true,
+                    trigger: 'item',
+                    axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                        type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                    },
+                    formatter: function (params) {
+
+
+                        var d = params.data;
+                        // console.log(d)
+                        if (d.source) {
+                            var relVal = nodesObj[d.source].name + "<br/>";
+                            relVal += nodesObj[d.source].color + "<br/>";
+                            relVal += nodesObj[d.target].name + "<br/>";
+                            relVal += nodesObj[d.target].color + "<br/>";
+
+                            return relVal;
+                        } else {
+                            var relVal = d.name + "<br/>";
+                            relVal += d.color + "<br/>";
+                            return relVal;
+                        }
+
+                    }
+                },
+                animation: true,
+                animationDuration: function (idx) {
+                    // 越往后的数据延迟越大
+                    return idx * 8;
+                },
+                series: [
+
+                    {
+                        type: 'graph',
+                        layout: 'circular',
+                        data: graph.nodes,
+                        links: graph.links,
+                        categories: categories,
+                        roam: true,
+                        focusNodeAdjacency: true,
+                        left: '20%',
+                        label: {
+                            normal: {
+                                position: 'right',
+                                color: 'black',
+                            },
+
+                        },
+                        force: {
+                            repulsion: 200
+                        },
+                        emphasis: {
+    
+                            label: {
+                                show: true
+                            },
+                            lineStyle: {
+                                width: 0.6,
+                                color: 'rgba(255,255,255,1)',
+                                type: 'solid'
+                            }
+
+
+                        }
+                    }
+                ]
+            };
+
+            myChart.setOption(option);
+
+
+            var dataIndex=null;
+
+            myChart.on('mouseout', function (params) {
+                if (dataIndex) {
+                    myChart.dispatchAction({
+                        type: 'focusNodeAdjacency',
+                        dataIndex: dataIndex
+                    });
+                }
+                
+
+            });
+
+/*
+              myChart.on('mouseover', function (params) {
+                myChart.dispatchAction({
+                        type: 'focusNodeAdjacency',
+                        dataIndex: dataIndex
+                    });
+
+            });
+*/
+            myChart.on("click", function (params) {
+
+               // console.log(params);
+                if (params.dataType == 'node') {
+                    document.querySelector('#title').innerText = '主色';
+                    
+                    //document.querySelector('#main').style.background = params.color;
+                    document.querySelector('#info').innerText = params.name;
+                    document.querySelector('#info').style.background = params.color;
+
+                    var relativeColors = getLinkNodes(params.data.id);
+                    var $otherColors = document.querySelector('#otherColors');
+                    $otherColors.innerHTML = '';
+
+                    var cdiv = document.createElement('div');
+                    cdiv.innerText = '适配色：';
+                    cdiv.style.color = 'white';
+                    cdiv.style.margin = '8px';
+                    cdiv.style.padding = '8px';
+                    $otherColors.appendChild(cdiv);
+
+
+                    let word2vec_colorsLabel = [];
+                    for (var i = 0; i < relativeColors.length; i++) {
+                        if (relativeColors[i]) {
+                            word2vec_colorsLabel.push(relativeColors[i].name);
+                            var cdiv = document.createElement('div');
+                            cdiv.innerText = relativeColors[i].name;
+                            cdiv.style.background = relativeColors[i].color;
+                            cdiv.style.margin = '8px';
+                            cdiv.style.padding = '8px';
+                            $otherColors.appendChild(cdiv);
+
+                        };
+
+                    };
+
+                    getImgsByVec(word2vec_colorsLabel);
+
+
+                    dataIndex=params.dataIndex;
+                   // console.log(params.dataIndex);
+
+                } else if (params.dataType == 'edge') {
+                    
+                    dataIndex=null;
+
+                    document.querySelector('#title').innerText = '颜色搭配建议';
+
+                    var $otherColors = document.querySelector('#otherColors');
+                    $otherColors.innerHTML = '';
+                    var $info = document.querySelector('#info');
+                    $info.innerHTML = '';
+                    $info.style.background = 'none';
+                    var n1 = nodesObj[params.data.source];
+                    var n2 = nodesObj[params.data.target];
+
+                    var html = '<div style="background:' + n1.color + ';padding:8px;margin:4px">' + n1.name + '</div>';
+                    var html2 = '<div style="background:' + n2.color + ';padding:8px;margin:4px">' + n2.name + '</div>';
+                    $info.innerHTML = html + html2;
+
+                    getImgsByVec([n1.name, n2.name]);
+                
+
+                };
+               
+
+            });
+
+
+            function getLinkNodes(_id) {
+                console.log('!!!!!', _id)
+                var links = graph.links;
+                var res = [];
+                for (var i = 0; i < links.length; i++) {
+                    if (links[i].source === _id) {
+                        console.log('!!!!-----', links[i].target)
+                        res.push(nodesObj[links[i].target]);
+                    }
+                };
+
+                return res
+            };
+
+
+        });
+
+
+        function getImgsByVec(_array){
+            word2Vec.add(_array, function (e, res2) {
+                       // console.log(res2)
+                        var imgs = [];
+                        for (let img_index = 0; img_index < res2.length; img_index++) {
+                            let r = res2[img_index].word;
+                            if (r.match('imgs/')) {
+                                imgs.push(r)
+                            }
+                        };
+                        imgs=imgs.slice(0,4);
+                        var $imgDiv = document.querySelector('#img_related');
+                        $imgDiv.innerHTML = '';
+                        for (let index = 0; index < imgs.length; index++) {
+                            let imgurl = imgs[index];
+                            let img = new Image();
+                            img.src = imgurl;
+                            $imgDiv.appendChild(img)
+                        }
+                    });
+        }
+
+    </script>
+</body>
+
+</html>
