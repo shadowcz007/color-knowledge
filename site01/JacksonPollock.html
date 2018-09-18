@@ -114,6 +114,21 @@
     </div>
    
     <script>
+        
+        
+        var imgSrcArr = ["./data/imgs/guardians-of-the-secret.jpg", "./data/imgs/shimmering-substance.jpg", "./data/imgs/war.jpg", "./data/imgs/enchanted-forest.jpg", "./data/imgs/untitled-4.jpg", "./data/imgs/number-8.jpg", "./data/imgs/reflection-of-the-big-dipper.jpg", "./data/imgs/blue-poles.jpg", "./data/imgs/there-were-seven-in-eight.jpg", "./data/imgs/lucifer.jpg", "./data/imgs/number-one.jpg", "./data/imgs/eyes-in-the-heat.jpg", "./data/imgs/galaxy.jpg", "./data/imgs/ocean-greyness.jpg", "./data/imgs/greyed-rainbow.jpg", "./data/imgs/stenographic-figure.jpg", "./data/imgs/in-echo-number-25.jpg", "./data/imgs/circumcision.jpg", "./data/imgs/white-light.jpg", "./data/imgs/the-key.jpg", "./data/imgs/gothic.jpg", "./data/imgs/mural-on-indian-red-ground.jpg", "./data/imgs/number-18.jpg", "./data/imgs/landscape-with-steer.jpg", "./data/imgs/mural.jpg", "./data/imgs/out-of-the-web.jpg", "./data/imgs/sea-change.jpg", "./data/imgs/the-deep.jpg", "./data/imgs/going-west.jpg", "./data/imgs/number-27.jpg", "./data/imgs/portrait-and-a-dream.jpg", "./data/imgs/number-32.jpg", "./data/imgs/number-28.jpg", "./data/imgs/full-fathom-five.jpg", "./data/imgs/the-she-wolf.jpg", "./data/imgs/moby-dick.jpg", "./data/imgs/head.jpg", "./data/imgs/croaking-movement.jpg", "./data/imgs/green-silver.jpg", "./data/imgs/convergence.jpg", "./data/imgs/number-12.jpg", "./data/imgs/one-number31.jpg", "./data/imgs/silver-over-black-white-yellow-and-red.jpg", "./data/imgs/undulating-paths.jpg", "./data/imgs/composition.jpg", "./data/imgs/pasiphae.jpg", "./data/imgs/the-moon-woman-cuts-the-circle.jpg", "./data/imgs/the-flame.jpg", "./data/imgs/autumn-rhythm.jpg", "./data/imgs/number-1.jpg", "./data/imgs/number-5.jpg", "./data/imgs/alchemy.jpg", "./data/imgs/moon-woman.jpg", "./data/imgs/lavender-mist.jpg", "./data/imgs/easter-and-the-totem.jpg", "./data/imgs/number-14-gray.jpg"];
+
+        var imgWrap = [];
+
+        function preloadImg(arr) {
+            for (var i = 0; i < arr.length; i++) {
+                imgWrap[i] = new Image();
+                imgWrap[i].src = arr[i];
+            }
+        };
+
+        preloadImg(imgSrcArr);
+        
 
         if ($(window).width()<520) {
             $('#mask').show();
