@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>JacksonPollock色彩图谱</title>
+    <title>色彩图谱</title>
     <style>
         #mainColor{
             position: fixed;
@@ -103,50 +103,77 @@
 
     <img id="mixlab" src="./img/mixlab-logo.png">
     <div id="img_containner">
-            <h4 >画作</h4>
-            <div id="img_related"></div>
+        <h4>画作</h4>
+        <div id="img_related"></div>
     </div>
 
     <div id="mask">
         <h2>请使用PC端体验</h2>
-        
+
         <p>mixlab无界社区<br>出品</p>
     </div>
-   
+
     <script>
-        
-        
+
+        if ($(window).width() < 520) {
+            $('#mask').show();
+        } else {
+            $('#mask').hide();
+        };
+
+        var myChart = echarts.init(document.getElementById('main'));
+        myChart.showLoading();
+
+
         var imgSrcArr = ["./data/imgs/guardians-of-the-secret.jpg", "./data/imgs/shimmering-substance.jpg", "./data/imgs/war.jpg", "./data/imgs/enchanted-forest.jpg", "./data/imgs/untitled-4.jpg", "./data/imgs/number-8.jpg", "./data/imgs/reflection-of-the-big-dipper.jpg", "./data/imgs/blue-poles.jpg", "./data/imgs/there-were-seven-in-eight.jpg", "./data/imgs/lucifer.jpg", "./data/imgs/number-one.jpg", "./data/imgs/eyes-in-the-heat.jpg", "./data/imgs/galaxy.jpg", "./data/imgs/ocean-greyness.jpg", "./data/imgs/greyed-rainbow.jpg", "./data/imgs/stenographic-figure.jpg", "./data/imgs/in-echo-number-25.jpg", "./data/imgs/circumcision.jpg", "./data/imgs/white-light.jpg", "./data/imgs/the-key.jpg", "./data/imgs/gothic.jpg", "./data/imgs/mural-on-indian-red-ground.jpg", "./data/imgs/number-18.jpg", "./data/imgs/landscape-with-steer.jpg", "./data/imgs/mural.jpg", "./data/imgs/out-of-the-web.jpg", "./data/imgs/sea-change.jpg", "./data/imgs/the-deep.jpg", "./data/imgs/going-west.jpg", "./data/imgs/number-27.jpg", "./data/imgs/portrait-and-a-dream.jpg", "./data/imgs/number-32.jpg", "./data/imgs/number-28.jpg", "./data/imgs/full-fathom-five.jpg", "./data/imgs/the-she-wolf.jpg", "./data/imgs/moby-dick.jpg", "./data/imgs/head.jpg", "./data/imgs/croaking-movement.jpg", "./data/imgs/green-silver.jpg", "./data/imgs/convergence.jpg", "./data/imgs/number-12.jpg", "./data/imgs/one-number31.jpg", "./data/imgs/silver-over-black-white-yellow-and-red.jpg", "./data/imgs/undulating-paths.jpg", "./data/imgs/composition.jpg", "./data/imgs/pasiphae.jpg", "./data/imgs/the-moon-woman-cuts-the-circle.jpg", "./data/imgs/the-flame.jpg", "./data/imgs/autumn-rhythm.jpg", "./data/imgs/number-1.jpg", "./data/imgs/number-5.jpg", "./data/imgs/alchemy.jpg", "./data/imgs/moon-woman.jpg", "./data/imgs/lavender-mist.jpg", "./data/imgs/easter-and-the-totem.jpg", "./data/imgs/number-14-gray.jpg"];
 
         var imgWrap = [];
 
         function preloadImg(arr) {
-            for (var i = 0; i < arr.length; i++) {
-                imgWrap[i] = new Image();
-                imgWrap[i].src = arr[i];
+            for (let i = 0; i < arr.length; i++) {
+                imgWrap[i] = {img:new Image(),isLoading:true};
+                imgWrap[i].img.src = arr[i];
+                imgWrap[i].img.onload=function(){
+                    imgWrap[i].isLoading=false;
+                };
             }
         };
 
         preloadImg(imgSrcArr);
-        
 
-        if ($(window).width()<520) {
-            $('#mask').show();
-        }else{
-            $('#mask').hide();
+
+        function ckeckIsAll(){
+            let _isAll=true;
+            for (let index = 0; index < imgWrap.length; index++) {
+                const imgw = imgWrap[index].isLoading;
+                if (imgw) {
+                    _isAll=false;
+                }
+            };
+            if (_isAll) {
+                myChart.hideLoading();
+            }else{
+                ckeckIsAll();
+            }
         };
 
-        const word2Vec = ml5.word2vec('./data/color2vec.json', function (e) {
-                // console.log(e)
-            });
+        setInterval(ckeckIsAll,1000);
 
-        var myChart = echarts.init(document.getElementById('main'));
+        
+
+
+        const word2Vec = ml5.word2vec('./data/color2vec.json', function (e) {
+            // console.log(e)
+        });
+
+
+
 
         $.getJSON('./data/graph.json', function (graph) {
 
             console.log(graph)
 
-            document.querySelector('#info').innerText='节点：'+graph.nodes.length+'个，关系：'+graph.links.length+'组';
+            document.querySelector('#info').innerText = '节点：' + graph.nodes.length + '个，关系：' + graph.links.length + '组';
 
             var categories = [];
             for (var i = 0; i < graph.nodes.length; i++) {
@@ -207,7 +234,7 @@
 
             });
 
-            
+
             graph.nodes = nodesNew;
 
             option = {
@@ -265,7 +292,7 @@
                             repulsion: 200
                         },
                         emphasis: {
-    
+
                             label: {
                                 show: true
                             },
@@ -284,7 +311,7 @@
             myChart.setOption(option);
 
 
-            var dataIndex=null;
+            var dataIndex = null;
 
             myChart.on('mouseout', function (params) {
                 if (dataIndex) {
@@ -293,25 +320,25 @@
                         dataIndex: dataIndex
                     });
                 }
-                
+
 
             });
 
-/*
-              myChart.on('mouseover', function (params) {
-                myChart.dispatchAction({
-                        type: 'focusNodeAdjacency',
-                        dataIndex: dataIndex
-                    });
-
-            });
-*/
+            /*
+                          myChart.on('mouseover', function (params) {
+                            myChart.dispatchAction({
+                                    type: 'focusNodeAdjacency',
+                                    dataIndex: dataIndex
+                                });
+            
+                        });
+            */
             myChart.on("click", function (params) {
 
-               // console.log(params);
+                // console.log(params);
                 if (params.dataType == 'node') {
                     document.querySelector('#title').innerText = '主色';
-                    
+
                     //document.querySelector('#main').style.background = params.color;
                     document.querySelector('#info').innerText = params.name;
                     document.querySelector('#info').style.background = params.color;
@@ -346,12 +373,12 @@
                     getImgsByVec(word2vec_colorsLabel);
 
 
-                    dataIndex=params.dataIndex;
-                   // console.log(params.dataIndex);
+                    dataIndex = params.dataIndex;
+                    // console.log(params.dataIndex);
 
                 } else if (params.dataType == 'edge') {
-                    
-                    dataIndex=null;
+
+                    dataIndex = null;
 
                     document.querySelector('#title').innerText = '颜色搭配建议';
 
@@ -368,10 +395,10 @@
                     $info.innerHTML = html + html2;
 
                     getImgsByVec([n1.name, n2.name]);
-                
+
 
                 };
-               
+
 
             });
 
@@ -394,26 +421,26 @@
         });
 
 
-        function getImgsByVec(_array){
+        function getImgsByVec(_array) {
             word2Vec.add(_array, function (e, res2) {
-                       // console.log(res2)
-                        var imgs = [];
-                        for (let img_index = 0; img_index < res2.length; img_index++) {
-                            let r = res2[img_index].word;
-                            if (r.match('imgs/')) {
-                                imgs.push(r)
-                            }
-                        };
-                        imgs=imgs.slice(0,4);
-                        var $imgDiv = document.querySelector('#img_related');
-                        $imgDiv.innerHTML = '';
-                        for (let index = 0; index < imgs.length; index++) {
-                            let imgurl = imgs[index];
-                            let img = new Image();
-                            img.src = imgurl;
-                            $imgDiv.appendChild(img)
-                        }
-                    });
+                // console.log(res2)
+                var imgs = [];
+                for (let img_index = 0; img_index < res2.length; img_index++) {
+                    let r = res2[img_index].word;
+                    if (r.match('imgs/')) {
+                        imgs.push(r)
+                    }
+                };
+                imgs = imgs.slice(0, 4);
+                var $imgDiv = document.querySelector('#img_related');
+                $imgDiv.innerHTML = '';
+                for (let index = 0; index < imgs.length; index++) {
+                    let imgurl = imgs[index];
+                    let img = new Image();
+                    img.src = imgurl;
+                    $imgDiv.appendChild(img)
+                }
+            });
         }
 
     </script>
