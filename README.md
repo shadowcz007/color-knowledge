@@ -11,7 +11,7 @@
 
 1 聚类算法+word2vec=传统色彩图谱
 
-技术解读《延禧攻略》的色彩搭配
+[技术解读《延禧攻略》的色彩搭配](https://shadowcz007.github.io/text2kg/index.html)
 
 
 2 色彩图谱+色卡=配色引擎
