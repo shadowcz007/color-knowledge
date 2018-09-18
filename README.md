@@ -11,13 +11,13 @@
 
 1 聚类算法+word2vec=传统色彩图谱
 
-[技术解读《延禧攻略》的色彩搭配](https://shadowcz007.github.io/text2kg/index.html)
+[技术解读《延禧攻略》的色彩搭配](https://shadowcz007.github.io/text2kg/color.html)
 
 
 2 色彩图谱+色卡=配色引擎
 
-适合技术宅的装修配色指南
+[适合技术宅的装修配色指南](https://shadowcz007.github.io/text2kg/color_libang.html)
 
 
 3 服装颜色数据+算法=设计师的用色风格
-  服装+肤色的颜色配对数据+算法=基于肤色的推荐算法
+  [服装+肤色的颜色配对数据+算法=基于肤色的推荐算法](https://shadowcz007.github.io/text2kg/color-laoer.html)
