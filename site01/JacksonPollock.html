@@ -139,12 +139,30 @@
 
         var imgWrap = [];
 
+
+        function ckeckIsAll() {
+            let _isAll = true;
+            for (let index = 0; index < imgWrap.length; index++) {
+                const imgw = imgWrap[index].isLoading;
+                if (imgw) {
+                    _isAll = false;
+                }
+            };
+            if (_isAll) {
+                myChart.hideLoading();
+            } else {
+                ckeckIsAll();
+            }
+        };
+
+
         function preloadImg(arr) {
             for (let i = 0; i < arr.length; i++) {
-                imgWrap[i] = {img:new Image(),isLoading:true};
+                imgWrap[i] = { img: new Image(), isLoading: true };
                 imgWrap[i].img.src = arr[i];
-                imgWrap[i].img.onload=function(){
-                    imgWrap[i].isLoading=false;
+                imgWrap[i].img.onload = function () {
+                    imgWrap[i].isLoading = false;
+                    ckeckIsAll();
                 };
             }
         };
@@ -152,24 +170,10 @@
         preloadImg(imgSrcArr);
 
 
-        function ckeckIsAll(){
-            let _isAll=true;
-            for (let index = 0; index < imgWrap.length; index++) {
-                const imgw = imgWrap[index].isLoading;
-                if (imgw) {
-                    _isAll=false;
-                }
-            };
-            if (_isAll) {
-                myChart.hideLoading();
-            }else{
-                ckeckIsAll();
-            }
-        };
 
-        setInterval(ckeckIsAll,1000);
 
-        
+
+
 
 
         const word2Vec = ml5.word2vec('./data/color2vec.json', function (e) {
@@ -383,7 +387,7 @@
                     getImgsByVec(word2vec_colorsLabel);
 
 
-                     
+
 
                 } else if (params.dataType == 'edge') {
 
@@ -406,9 +410,9 @@
                     getImgsByVec([n1.name, n2.name]);
 
 
-                }; 
-            
-                        });
+                };
+
+            });
 
 
             myChart.on("click", function (params) {
@@ -513,8 +517,8 @@
                 var $imgDiv = document.querySelector('#img_related');
                 $imgDiv.innerHTML = '';
                 for (let index = 0; index < imgs.length; index++) {
-                    let div=document.createElement('div');
-                    
+                    let div = document.createElement('div');
+
                     let imgurl = imgs[index];
                     let img = new Image();
                     img.src = imgurl;
