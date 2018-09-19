@@ -11,40 +11,46 @@
             position: fixed;
             top: 12px;
             left: 2%;
+            display: flex;
         }
         #mainColor #title{
             color: white;
             text-align: center;
-            font-size: 32px;
-            font-weight: 300;
+            font-size: 14px;
+            font-weight: 500;
             padding: 12px;
-            border-radius: 3px;
-            margin: 0
+            margin: 0;
         }
 
         #info {
-
-            text-align: center;
-            font-size: 32px;
-            font-weight: 300;
+            max-height: 24px;
+           text-align: center;
+            font-size: 12px;
+            display: flex;
+            font-weight: 400;
             padding: 12px;
             border-radius: 3px;
-            color:white;
+        }
+
+        #info div{
+            height: 24px;
         }
 
         #otherColors {
             text-align: center;
-            font-size: 18px;
-            font-weight: 300;
+            font-size: 12px;
+            display: flex;
+            font-weight: 400;
             padding: 12px;
             border-radius: 3px;
+            
         }
 
         #mixlab {
             position: fixed;
             bottom: 2%;
             right: 2%;
-            font-size: 24px;
+            font-size: 18px;
             color: white;
             font-weight: 300;
             width: 12%;
@@ -54,23 +60,27 @@
 
         #img_containner{
             position: fixed;
-            bottom: 2%;
+            top: 15%;
             left: 2%;
             font-size: 24px;
             color: white;
             font-weight: 300;
-            
             z-index: 999;
         }
         #img_related{
             display: flex;
-            height: 98px;
+            flex-direction: column;
         }
-        #img_related img{
+        #img_related div{
             width: 98px;
-            height: auto;
+            height: 98px;
             margin: 4px;
         }
+
+        #img_related img{
+            height: 100%;
+        }
+
         #mask{
             position:fixed;
             top:0;
@@ -94,7 +104,7 @@
 
 
 <body style="background:black">
-    <div id="main" style="width:100%;height:80vh;background:black"></div>
+    <div id="main" style="margin-top:5%;width:100%;height:80vh;background:black"></div>
     <div id="mainColor">
         <h4 id="title">色彩图谱</h4>
         <div id="info"></div>
@@ -103,7 +113,7 @@
 
     <img id="mixlab" src="./img/mixlab-logo.png">
     <div id="img_containner">
-        <h4>画作</h4>
+        <h5>画作</h5>
         <div id="img_related"></div>
     </div>
 
@@ -333,6 +343,74 @@
             
                         });
             */
+
+
+            myChart.on('mouseover', function (params) {
+                if (params.dataType == 'node') {
+                    document.querySelector('#title').innerText = '主色';
+
+                    //document.querySelector('#main').style.background = params.color;
+                    document.querySelector('#info').innerText = params.name;
+                    document.querySelector('#info').style.background = params.color;
+
+                    var relativeColors = getLinkNodes(params.data.id);
+                    var $otherColors = document.querySelector('#otherColors');
+                    $otherColors.innerHTML = '';
+
+                    var cdiv = document.createElement('div');
+                    cdiv.innerText = '适配色：';
+                    cdiv.style.color = 'white';
+                    cdiv.style.margin = '8px';
+                    cdiv.style.padding = '8px';
+                    $otherColors.appendChild(cdiv);
+
+
+                    let word2vec_colorsLabel = [];
+                    for (var i = 0; i < relativeColors.length; i++) {
+                        if (relativeColors[i]) {
+                            word2vec_colorsLabel.push(relativeColors[i].name);
+                            var cdiv = document.createElement('div');
+                            cdiv.innerText = relativeColors[i].name;
+                            cdiv.style.background = relativeColors[i].color;
+                            cdiv.style.margin = '8px';
+                            cdiv.style.padding = '8px';
+                            $otherColors.appendChild(cdiv);
+
+                        };
+
+                    };
+
+                    getImgsByVec(word2vec_colorsLabel);
+
+
+                     
+
+                } else if (params.dataType == 'edge') {
+
+                    dataIndex = null;
+
+                    document.querySelector('#title').innerText = '颜色搭配建议';
+
+                    var $otherColors = document.querySelector('#otherColors');
+                    $otherColors.innerHTML = '';
+                    var $info = document.querySelector('#info');
+                    $info.innerHTML = '';
+                    $info.style.background = 'none';
+                    var n1 = nodesObj[params.data.source];
+                    var n2 = nodesObj[params.data.target];
+
+                    var html = '<div style="background:' + n1.color + ';padding:8px;margin:4px">' + n1.name + '</div>';
+                    var html2 = '<div style="background:' + n2.color + ';padding:8px;margin:4px">' + n2.name + '</div>';
+                    $info.innerHTML = html + html2;
+
+                    getImgsByVec([n1.name, n2.name]);
+
+
+                }; 
+            
+                        });
+
+
             myChart.on("click", function (params) {
 
                 // console.log(params);
@@ -435,10 +513,14 @@
                 var $imgDiv = document.querySelector('#img_related');
                 $imgDiv.innerHTML = '';
                 for (let index = 0; index < imgs.length; index++) {
+                    let div=document.createElement('div');
+                    
                     let imgurl = imgs[index];
                     let img = new Image();
                     img.src = imgurl;
-                    $imgDiv.appendChild(img)
+
+                    div.appendChild(img);
+                    $imgDiv.appendChild(div)
                 }
             });
         }
