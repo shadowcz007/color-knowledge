@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>mixlab</title>
+    <script src="https://cdn.bootcss.com/echarts/4.1.0.rc2/echarts.min.js"></script>
+    <script src="https://cdn.bootcss.com/randomcolor/0.5.2/randomColor.min.js"></script>
+</head>
+<style>
+    body{
+        background: #eee
+    }
+</style>
+<script>
+
+/*
+//基金
+var ks=Object.keys(res);
+var nodes={};
+var nodeslc={};
+for(var i=0;i<ks.length;i++){
+	var rs=res[ks[i]];
+ 	for(let j=0;j<rs.length;j++){
+		var ns=rs[j].capital.name;
+		for(let b=0;b<ns.length;b++){
+		if(nodes[ns[b]]){
+			
+			nodes[ns[b]]+=1;
+			nodeslc[ns[b]].push(rs[j].lc);
+		}else{
+		nodeslc[ns[b]]=[rs[j].lc];
+		nodes[ns[b]]=1;
+	}
+		
+
+	}
+
+	}
+ 	
+};
+
+var ks=Object.keys(nodes);
+var nodesArray=[];
+for(var i=0;i<ks.length;i++){
+	nodesArray.push({lc:nodeslc[ks[i]],name:ks[i],value:nodes[ks[i]]})
+};
+
+var compare = function (obj1, obj2) {
+    var val1 = obj1.value;
+    var val2 = obj2.value;
+    if (val1 < val2) {
+        return -1;
+    } else if (val1 > val2) {
+        return 1;
+    } else {
+        return 0;
+    }            
+} ;
+nodesArray=nodesArray.sort(compare)
+console.log(nodesArray);
+
+
+var ks=Object.keys(res);window.linkIndex=0;
+var links=[];
+
+for(var e=0;e<ks.length;e++){
+	
+	var ns=res[ks[e]];
+	for(var u=0;u<ns.length;u++){
+		var o=ns[u].capital.name;
+		
+for(var i=0;i<o.length;i++){
+	
+	for(var j=0;j<o.length;j++){
+
+		if(i!=j){
+			window.linkIndex+=1;
+			var link={
+				id:window.linkIndex,
+				source:o[i],
+				target:o[j]
+
+			};
+
+			links.push(link)
+			console.log(o[i],o[j])
+		}
+	}
+}
+	}	
+};
+*/
+
+
+/*
+
+//项目 
+var ks=Object.keys(res);
+var nodes={};
+var nodeslc={};
+for(var i=0;i<ks.length;i++){
+	var rs=res[ks[i]];
+ 	for(let j=0;j<rs.length;j++){
+		var ns=rs[j].company[0];
+		 
+		if(nodes[ns]){
+			
+			nodes[ns]+=1;
+			nodeslc[ns].push(rs[j].time);
+		}else{
+		nodeslc[ns]=[rs[j].time];
+		nodes[ns]=1;
+	}
+		
+
+ 
+
+	}
+ 	
+};
+
+var ks=Object.keys(nodes);
+var nodesArray=[];
+for(var i=0;i<ks.length;i++){
+	nodesArray.push({time:nodeslc[ks[i]],name:ks[i],value:nodes[ks[i]]})
+};
+
+var compare = function (obj1, obj2) {
+    var val1 = obj1.value;
+    var val2 = obj2.value;
+    if (val1 < val2) {
+        return -1;
+    } else if (val1 > val2) {
+        return 1;
+    } else {
+        return 0;
+    }            
+} ;
+nodesArray=nodesArray.sort(compare)
+console.log(nodesArray);
+
+
+ 
+var nodesG={};
+ 
+for(var i=0;i<ks.length;i++){
+	var rs=res[ks[i]];
+ 	for(let j=0;j<rs.length;j++){
+		var ns=rs[j].capital.name;
+		for(let b=0;b<ns.length;b++){
+		if(nodesG[ns[b]]){
+			nodesG[ns[b]].push(rs[j].company[0]);		 
+		}else{
+		nodesG[ns[b]]=[rs[j].company[0]];
+	}
+	}
+	}
+};
+
+
+u=Object.keys(nodesG);
+count={};
+for(var i=0;i<u.length;i++){
+	if(u[i]!='····' && nodesG[u[i]].length>2){
+	count[u[i]]=nodesG[u[i]].length}
+}
+
+
+
+window.linkIndex=0;
+var links=[];
+for(var e=0;e<ks.length;e++){
+	
+var ns=res[ks[e]];
+
+for(var u=0;u<ns.length;u++){
+	
+
+if(ns[u].capital.name && ns[u].capital.name.length){
+
+var o=nodesG[ns[u].capital.name];
+		
+if(count[ns[u].capital.name] && o && ns[u].capital.name!='未透露'){
+console.log(ns[u].capital.name)
+delete nodesG[ns[u].capital.name];
+	//console.log(o);
+	 				
+		
+for(var i=0;i<o.length;i++){
+	
+	for(var j=0;j<o.length;j++){
+
+		if(i!=j){
+			window.linkIndex+=1;
+			var link={
+				id:window.linkIndex,
+				source:o[i],
+				target:o[j]
+
+			};
+
+			links.push(link)
+			//console.log(o[i],o[j])
+		}
+	}
+};
+
+		}
+
+}
+
+
+	}	
+};
+
+
+*/
+</script>
+<body>
+    <div id="myChart" style="width:100%;height:100vh;"></div>
+    <script>
+        var myChart = echarts.init(document.getElementById('myChart'));
+   
+        myChart.showLoading();
+        myChart.hideLoading();
+        var categories = [];
+        for (var i = 0; i < 2; i++) {
+            categories[i] = {
+                name: '类目' + i
+            };
+        };
+
+/*
+        var graph = {
+            "nodes": [{
+                "id": "0",
+                "name": "Myriel",
+                "itemStyle": null,
+                "symbolSize": 19.12381,
+                "category": 0
+            }, {
+                "id": "1",
+                "name": "Napoleon",
+                "itemStyle": null,
+                "symbolSize": 2.6666666666666665,
+                "category": 0
+            }, {
+                "id": "2",
+                "name": "MlleBaptistine",
+                "itemStyle": null,
+                "symbolSize": 6.323809333333333,
+                "category": 1
+            }],
+            "links": [{
+                "id": "0",
+                "name": null,
+                "source": "1",
+                "target": "0",
+
+            }, {
+                "id": "1",
+                "name": null,
+                "source": "2",
+                "target": "0",
+
+            }, {
+                "id": "2",
+                "name": null,
+                "source": "3",
+                "target": "0",
+
+            }, {
+                "id": "3",
+                "name": null,
+                "source": "3",
+                "target": "2",
+
+            }]
+        };
+*/
+
+var graph={"nodes":[{"value":1,"name":"狂战士","img":"//ossweb-img.qq.com/images/lol/img/champion/Olaf.png","win":"0.4286"},{"value":3,"name":"诡术妖姬","img":"//ossweb-img.qq.com/images/lol/img/champion/Leblanc.png","win":"0.4231"},{"value":2,"name":"猩红收割者","img":"//ossweb-img.qq.com/images/lol/img/champion/Vladimir.png","win":"0.3810"},{"value":7,"name":"符文法师","img":"//ossweb-img.qq.com/images/lol/img/champion/Ryze.png","win":"0.4603"},{"value":7,"name":"战争女神","img":"//ossweb-img.qq.com/images/lol/img/champion/Sivir.png","win":"0.4348"},{"value":1,"name":"赏金猎人","img":"//ossweb-img.qq.com/images/lol/img/champion/MissFortune.png","win":"0.3200"},{"value":8,"name":"寒冰射手","img":"//ossweb-img.qq.com/images/lol/img/champion/Ashe.png","win":"0.5000"},{"value":2,"name":"瘟疫之源","img":"//ossweb-img.qq.com/images/lol/img/champion/Twitch.png","win":"0.1429"},{"value":2,"name":"虚空行者","img":"//ossweb-img.qq.com/images/lol/img/champion/Kassadin.png","win":"0.5000"},{"value":6,"name":"海洋之灾","img":"//ossweb-img.qq.com/images/lol/img/champion/Gangplank.png","win":"0.4000"},{"value":2,"name":"英勇投弹手","img":"//ossweb-img.qq.com/images/lol/img/champion/Corki.png","win":"0.3846"},{"value":7,"name":"天启者","img":"//ossweb-img.qq.com/images/lol/img/champion/Karma.png","win":"0.4766"},{"value":1,"name":"巨魔之王","img":"//ossweb-img.qq.com/images/lol/img/champion/Trundle.png","win":"0.4444"},{"value":7,"name":"皮城女警","img":"//ossweb-img.qq.com/images/lol/img/champion/Caitlyn.png","win":"0.4737"},{"value":7,"name":"扭曲树精","img":"//ossweb-img.qq.com/images/lol/img/champion/Maokai.png","win":"0.5211"},{"value":1,"name":"荒漠屠夫","img":"//ossweb-img.qq.com/images/lol/img/champion/Renekton.png","win":"0.5217"},{"value":3,"name":"德玛西亚皇子","img":"//ossweb-img.qq.com/images/lol/img/champion/JarvanIV.png","win":"0.0000"},{"value":10,"name":"蜘蛛女皇","img":"//ossweb-img.qq.com/images/lol/img/champion/Elise.png","win":"0.6000"},{"value":5,"name":"发条魔灵","img":"//ossweb-img.qq.com/images/lol/img/champion/Orianna.png","win":"0.4516"},{"value":11,"name":"盲僧","img":"//ossweb-img.qq.com/images/lol/img/champion/LeeSin.png","win":"0.4911"},{"value":3,"name":"机械公敌","img":"//ossweb-img.qq.com/images/lol/img/champion/Rumble.png","win":"0.3793"},{"value":1,"name":"魔蛇之拥","img":"//ossweb-img.qq.com/images/lol/img/champion/Cassiopeia.png","win":"0.4091"},{"value":1,"name":"狂野女猎手","img":"//ossweb-img.qq.com/images/lol/img/champion/Nidalee.png","win":"0.4286"},{"value":4,"name":"圣锤之毅","img":"//ossweb-img.qq.com/images/lol/img/champion/Poppy.png","win":"0.3333"},{"value":11,"name":"酒桶","img":"//ossweb-img.qq.com/images/lol/img/champion/Gragas.png","win":"0.4872"},{"value":7,"name":"探险家","img":"//ossweb-img.qq.com/images/lol/img/champion/Ezreal.png","win":"0.5077"},{"value":3,"name":"虚空先知","img":"//ossweb-img.qq.com/images/lol/img/champion/Malzahar.png","win":"0.5303"},{"value":2,"name":"深渊巨口","img":"//ossweb-img.qq.com/images/lol/img/champion/KogMaw.png","win":"0.6400"},{"value":7,"name":"暮光之眼","img":"//ossweb-img.qq.com/images/lol/img/champion/Shen.png","win":"0.4462"},{"value":1,"name":"九尾妖狐","img":"//ossweb-img.qq.com/images/lol/img/champion/Ahri.png","win":"0.5000"},{"value":12,"name":"法外狂徒","img":"//ossweb-img.qq.com/images/lol/img/champion/Graves.png","win":"0.3333"},{"value":1,"name":"傲之追猎者","img":"//ossweb-img.qq.com/images/lol/img/champion/Rengar.png","win":"0.6176"},{"value":13,"name":"惩戒之箭","img":"//ossweb-img.qq.com/images/lol/img/champion/Varus.png","win":"0.4455"},{"value":5,"name":"深海泰坦","img":"//ossweb-img.qq.com/images/lol/img/champion/Nautilus.png","win":"0.5641"},{"value":8,"name":"机械先驱","img":"//ossweb-img.qq.com/images/lol/img/champion/Viktor.png","win":"0.4000"},{"value":1,"name":"无双剑姬","img":"//ossweb-img.qq.com/images/lol/img/champion/Fiora.png","win":"0.1429"},{"value":5,"name":"仙灵女巫","img":"//ossweb-img.qq.com/images/lol/img/champion/Lulu.png","win":"0.5526"},{"value":5,"name":"虚空掠夺者","img":"//ossweb-img.qq.com/images/lol/img/champion/Khazix.png","win":"0.5250"},{"value":2,"name":"未来守护者","img":"//ossweb-img.qq.com/images/lol/img/champion/Jayce.png","win":"0.6415"},{"value":1,"name":"冰霜女巫","img":"//ossweb-img.qq.com/images/lol/img/champion/Lissandra.png","win":"0.2500"},{"value":6,"name":"暗黑元首","img":"//ossweb-img.qq.com/images/lol/img/champion/Syndra.png","win":"0.5429"},{"value":1,"name":"荆棘之兴","img":"//ossweb-img.qq.com/images/lol/img/champion/Zyra.png","win":"0.5323"},{"value":4,"name":"迷失之牙","img":"//ossweb-img.qq.com/images/lol/img/champion/Gnar.png","win":"0.0000"},{"value":3,"name":"岩雀","img":"//ossweb-img.qq.com/images/lol/img/champion/Taliyah.png","win":"0.5806"},{"value":3,"name":"青钢影","img":"//ossweb-img.qq.com/images/lol/img/champion/Camille.png","win":"0.6053"},{"value":15,"name":"弗雷尔卓德之心","img":"//ossweb-img.qq.com/images/lol/img/champion/Braum.png","win":"0.4091"},{"value":10,"name":"戏命师","img":"//ossweb-img.qq.com/images/lol/img/champion/Jhin.png","win":"0.5942"},{"value":1,"name":"永猎双子","img":"//ossweb-img.qq.com/images/lol/img/champion/Kindred.png","win":"0.0000"},{"value":9,"name":"河流之王","img":"//ossweb-img.qq.com/images/lol/img/champion/TahmKench.png","win":"0.5313"},{"value":4,"name":"圣枪游侠","img":"//ossweb-img.qq.com/images/lol/img/champion/Lucian.png","win":"0.5333"},{"value":1,"name":"时间刺客","img":"//ossweb-img.qq.com/images/lol/img/champion/Ekko.png","win":"0.5909"},{"value":1,"name":"皮城执法官","img":"//ossweb-img.qq.com/images/lol/img/champion/Vi.png","win":"0.3333"},{"value":5,"name":"沙漠皇帝","img":"//ossweb-img.qq.com/images/lol/img/champion/Azir.png","win":"0.0000"},{"value":4,"name":"魂锁典狱长","img":"//ossweb-img.qq.com/images/lol/img/champion/Thresh.png","win":"0.6571"},{"value":7,"name":"虚空遁地兽","img":"//ossweb-img.qq.com/images/lol/img/champion/RekSai.png","win":"0.4722"},{"value":2,"name":"复仇之矛","img":"//ossweb-img.qq.com/images/lol/img/champion/Kalista.png","win":"1.0000"},{"value":3,"name":"星界游神","img":"//ossweb-img.qq.com/images/lol/img/champion/Bard.png","win":"0.5000"}],"links":[{"id":0,"target":"符文法师","source":"符文法师"},{"id":1,"target":"符文法师","source":"沙漠皇帝"},{"id":2,"target":"符文法师","source":"岩雀"},{"id":3,"target":"沙漠皇帝","source":"沙漠皇帝"},{"id":4,"target":"沙漠皇帝","source":"岩雀"},{"id":5,"target":"岩雀","source":"岩雀"},{"id":6,"target":"发条魔灵","source":"发条魔灵"},{"id":7,"target":"发条魔灵","source":"暗黑元首"},{"id":8,"target":"发条魔灵","source":"机械先驱"},{"id":9,"target":"暗黑元首","source":"暗黑元首"},{"id":10,"target":"暗黑元首","source":"机械先驱"},{"id":11,"target":"机械先驱","source":"机械先驱"},{"id":12,"target":"符文法师","source":"符文法师"},{"id":13,"target":"符文法师","source":"诡术妖姬"},{"id":14,"target":"符文法师","source":"暗黑元首"},{"id":15,"target":"诡术妖姬","source":"诡术妖姬"},{"id":16,"target":"诡术妖姬","source":"暗黑元首"},{"id":17,"target":"暗黑元首","source":"暗黑元首"},{"id":18,"target":"戏命师","source":"戏命师"},{"id":19,"target":"戏命师","source":"惩戒之箭"},{"id":20,"target":"戏命师","source":"皮城女警"},{"id":21,"target":"惩戒之箭","source":"惩戒之箭"},{"id":22,"target":"惩戒之箭","source":"皮城女警"},{"id":23,"target":"皮城女警","source":"皮城女警"},{"id":24,"target":"诡术妖姬","source":"诡术妖姬"},{"id":25,"target":"诡术妖姬","source":"符文法师"},{"id":26,"target":"诡术妖姬","source":"英勇投弹手"},{"id":27,"target":"符文法师","source":"符文法师"},{"id":28,"target":"符文法师","source":"英勇投弹手"},{"id":29,"target":"英勇投弹手","source":"英勇投弹手"},{"id":30,"target":"探险家","source":"探险家"},{"id":31,"target":"探险家","source":"寒冰射手"},{"id":32,"target":"探险家","source":"战争女神"},{"id":33,"target":"寒冰射手","source":"寒冰射手"},{"id":34,"target":"寒冰射手","source":"战争女神"},{"id":35,"target":"战争女神","source":"战争女神"},{"id":36,"target":"发条魔灵","source":"发条魔灵"},{"id":37,"target":"发条魔灵","source":"岩雀"},{"id":38,"target":"发条魔灵","source":"虚空行者"},{"id":39,"target":"岩雀","source":"岩雀"},{"id":40,"target":"岩雀","source":"虚空行者"},{"id":41,"target":"虚空行者","source":"虚空行者"},{"id":42,"target":"符文法师","source":"符文法师"},{"id":43,"target":"符文法师","source":"沙漠皇帝"},{"id":44,"target":"符文法师","source":"暗黑元首"},{"id":45,"target":"沙漠皇帝","source":"沙漠皇帝"},{"id":46,"target":"沙漠皇帝","source":"暗黑元首"},{"id":47,"target":"暗黑元首","source":"暗黑元首"},{"id":48,"target":"探险家","source":"探险家"},{"id":49,"target":"探险家","source":"寒冰射手"},{"id":50,"target":"探险家","source":"惩戒之箭"},{"id":51,"target":"寒冰射手","source":"寒冰射手"},{"id":52,"target":"寒冰射手","source":"惩戒之箭"},{"id":53,"target":"惩戒之箭","source":"惩戒之箭"},{"id":54,"target":"戏命师","source":"戏命师"},{"id":55,"target":"戏命师","source":"战争女神"},{"id":56,"target":"戏命师","source":"皮城女警"},{"id":57,"target":"战争女神","source":"战争女神"},{"id":58,"target":"战争女神","source":"皮城女警"},{"id":59,"target":"皮城女警","source":"皮城女警"},{"id":60,"target":"寒冰射手","source":"寒冰射手"},{"id":61,"target":"寒冰射手","source":"惩戒之箭"},{"id":62,"target":"寒冰射手","source":"皮城女警"},{"id":63,"target":"惩戒之箭","source":"惩戒之箭"},{"id":64,"target":"惩戒之箭","source":"皮城女警"},{"id":65,"target":"皮城女警","source":"皮城女警"},{"id":66,"target":"酒桶","source":"酒桶"},{"id":67,"target":"酒桶","source":"法外狂徒"},{"id":68,"target":"酒桶","source":"盲僧"},{"id":69,"target":"法外狂徒","source":"法外狂徒"},{"id":70,"target":"法外狂徒","source":"盲僧"},{"id":71,"target":"盲僧","source":"盲僧"},{"id":72,"target":"符文法师","source":"符文法师"},{"id":73,"target":"符文法师","source":"机械先驱"},{"id":74,"target":"符文法师","source":"天启者"},{"id":75,"target":"机械先驱","source":"机械先驱"},{"id":76,"target":"机械先驱","source":"天启者"},{"id":77,"target":"天启者","source":"天启者"},{"id":78,"target":"暗黑元首","source":"暗黑元首"},{"id":79,"target":"暗黑元首","source":"虚空行者"},{"id":80,"target":"暗黑元首","source":"机械先驱"},{"id":81,"target":"虚空行者","source":"虚空行者"},{"id":82,"target":"虚空行者","source":"机械先驱"},{"id":83,"target":"机械先驱","source":"机械先驱"},{"id":84,"target":"寒冰射手","source":"寒冰射手"},{"id":85,"target":"寒冰射手","source":"戏命师"},{"id":86,"target":"寒冰射手","source":"惩戒之箭"},{"id":87,"target":"戏命师","source":"戏命师"},{"id":88,"target":"戏命师","source":"惩戒之箭"},{"id":89,"target":"惩戒之箭","source":"惩戒之箭"},{"id":90,"target":"酒桶","source":"酒桶"},{"id":91,"target":"酒桶","source":"盲僧"},{"id":92,"target":"酒桶","source":"法外狂徒"},{"id":93,"target":"盲僧","source":"盲僧"},{"id":94,"target":"盲僧","source":"法外狂徒"},{"id":95,"target":"法外狂徒","source":"法外狂徒"},{"id":96,"target":"酒桶","source":"酒桶"},{"id":97,"target":"酒桶","source":"法外狂徒"},{"id":98,"target":"酒桶","source":"蜘蛛女皇"},{"id":99,"target":"法外狂徒","source":"法外狂徒"},{"id":100,"target":"法外狂徒","source":"蜘蛛女皇"},{"id":101,"target":"蜘蛛女皇","source":"蜘蛛女皇"},{"id":102,"target":"沙漠皇帝","source":"沙漠皇帝"},{"id":103,"target":"沙漠皇帝","source":"机械先驱"},{"id":104,"target":"沙漠皇帝","source":"诡术妖姬"},{"id":105,"target":"机械先驱","source":"机械先驱"},{"id":106,"target":"机械先驱","source":"诡术妖姬"},{"id":107,"target":"诡术妖姬","source":"诡术妖姬"},{"id":108,"target":"探险家","source":"探险家"},{"id":109,"target":"探险家","source":"皮城女警"},{"id":110,"target":"探险家","source":"深渊巨口"},{"id":111,"target":"皮城女警","source":"皮城女警"},{"id":112,"target":"皮城女警","source":"深渊巨口"},{"id":113,"target":"深渊巨口","source":"深渊巨口"},{"id":114,"target":"盲僧","source":"盲僧"},{"id":115,"target":"盲僧","source":"永猎双子"},{"id":116,"target":"盲僧","source":"酒桶"},{"id":117,"target":"永猎双子","source":"永猎双子"},{"id":118,"target":"永猎双子","source":"酒桶"},{"id":119,"target":"酒桶","source":"酒桶"},{"id":120,"target":"海洋之灾","source":"海洋之灾"},{"id":121,"target":"海洋之灾","source":"青钢影"},{"id":122,"target":"海洋之灾","source":"时间刺客"},{"id":123,"target":"青钢影","source":"青钢影"},{"id":124,"target":"青钢影","source":"时间刺客"},{"id":125,"target":"时间刺客","source":"时间刺客"},{"id":126,"target":"扭曲树精","source":"扭曲树精"},{"id":127,"target":"扭曲树精","source":"暮光之眼"},{"id":128,"target":"扭曲树精","source":"圣锤之毅"},{"id":129,"target":"暮光之眼","source":"暮光之眼"},{"id":130,"target":"暮光之眼","source":"圣锤之毅"},{"id":131,"target":"圣锤之毅","source":"圣锤之毅"},{"id":132,"target":"盲僧","source":"盲僧"},{"id":133,"target":"盲僧","source":"酒桶"},{"id":134,"target":"盲僧","source":"蜘蛛女皇"},{"id":135,"target":"酒桶","source":"酒桶"},{"id":136,"target":"酒桶","source":"蜘蛛女皇"},{"id":137,"target":"蜘蛛女皇","source":"蜘蛛女皇"},{"id":138,"target":"战争女神","source":"战争女神"},{"id":139,"target":"战争女神","source":"深渊巨口"},{"id":140,"target":"战争女神","source":"瘟疫之源"},{"id":141,"target":"深渊巨口","source":"深渊巨口"},{"id":142,"target":"深渊巨口","source":"瘟疫之源"},{"id":143,"target":"瘟疫之源","source":"瘟疫之源"},{"id":144,"target":"盲僧","source":"盲僧"},{"id":145,"target":"盲僧","source":"虚空掠夺者"},{"id":146,"target":"盲僧","source":"法外狂徒"},{"id":147,"target":"虚空掠夺者","source":"虚空掠夺者"},{"id":148,"target":"虚空掠夺者","source":"法外狂徒"},{"id":149,"target":"法外狂徒","source":"法外狂徒"},{"id":150,"target":"虚空恐惧","source":"虚空恐惧"},{"id":151,"target":"虚空恐惧","source":"山隐之焰"},{"id":152,"target":"虚空恐惧","source":"青钢影"},{"id":153,"target":"山隐之焰","source":"山隐之焰"},{"id":154,"target":"山隐之焰","source":"青钢影"},{"id":155,"target":"青钢影","source":"青钢影"},{"id":156,"target":"暮光之眼","source":"暮光之眼"},{"id":157,"target":"暮光之眼","source":"扭曲树精"},{"id":158,"target":"暮光之眼","source":"深海泰坦"},{"id":159,"target":"扭曲树精","source":"扭曲树精"},{"id":160,"target":"扭曲树精","source":"深海泰坦"},{"id":161,"target":"深海泰坦","source":"深海泰坦"},{"id":162,"target":"发条魔灵","source":"发条魔灵"},{"id":163,"target":"发条魔灵","source":"符文法师"},{"id":164,"target":"发条魔灵","source":"天启者"},{"id":165,"target":"符文法师","source":"符文法师"},{"id":166,"target":"符文法师","source":"天启者"},{"id":167,"target":"天启者","source":"天启者"},{"id":168,"target":"海洋之灾","source":"海洋之灾"},{"id":169,"target":"海洋之灾","source":"暮光之眼"},{"id":170,"target":"海洋之灾","source":"扭曲树精"},{"id":171,"target":"暮光之眼","source":"暮光之眼"},{"id":172,"target":"暮光之眼","source":"扭曲树精"},{"id":173,"target":"扭曲树精","source":"扭曲树精"},{"id":174,"target":"酒桶","source":"酒桶"},{"id":175,"target":"酒桶","source":"北地之怒"},{"id":176,"target":"酒桶","source":"盲僧"},{"id":177,"target":"北地之怒","source":"北地之怒"},{"id":178,"target":"北地之怒","source":"盲僧"},{"id":179,"target":"盲僧","source":"盲僧"},{"id":180,"target":"盲僧","source":"盲僧"},{"id":181,"target":"盲僧","source":"蜘蛛女皇"},{"id":182,"target":"盲僧","source":"法外狂徒"},{"id":183,"target":"蜘蛛女皇","source":"蜘蛛女皇"},{"id":184,"target":"蜘蛛女皇","source":"法外狂徒"},{"id":185,"target":"法外狂徒","source":"法外狂徒"},{"id":186,"target":"扭曲树精","source":"扭曲树精"},{"id":187,"target":"扭曲树精","source":"海洋之灾"},{"id":188,"target":"扭曲树精","source":"祖安狂人"},{"id":189,"target":"海洋之灾","source":"海洋之灾"},{"id":190,"target":"海洋之灾","source":"祖安狂人"},{"id":191,"target":"祖安狂人","source":"祖安狂人"},{"id":192,"target":"海洋之灾","source":"海洋之灾"},{"id":193,"target":"海洋之灾","source":"迷失之牙"},{"id":194,"target":"海洋之灾","source":"无双剑姬"},{"id":195,"target":"迷失之牙","source":"迷失之牙"},{"id":196,"target":"迷失之牙","source":"无双剑姬"},{"id":197,"target":"无双剑姬","source":"无双剑姬"},{"id":198,"target":"暮光之眼","source":"暮光之眼"},{"id":199,"target":"暮光之眼","source":"圣锤之毅"},{"id":200,"target":"暮光之眼","source":"机械公敌"},{"id":201,"target":"圣锤之毅","source":"圣锤之毅"},{"id":202,"target":"圣锤之毅","source":"机械公敌"},{"id":203,"target":"机械公敌","source":"机械公敌"},{"id":204,"target":"戏命师","source":"戏命师"},{"id":205,"target":"戏命师","source":"探险家"},{"id":206,"target":"戏命师","source":"圣枪游侠"},{"id":207,"target":"探险家","source":"探险家"},{"id":208,"target":"探险家","source":"圣枪游侠"},{"id":209,"target":"圣枪游侠","source":"圣枪游侠"},{"id":210,"target":"酒桶","source":"酒桶"},{"id":211,"target":"酒桶","source":"蜘蛛女皇"},{"id":212,"target":"酒桶","source":"法外狂徒"},{"id":213,"target":"蜘蛛女皇","source":"蜘蛛女皇"},{"id":214,"target":"蜘蛛女皇","source":"法外狂徒"},{"id":215,"target":"法外狂徒","source":"法外狂徒"},{"id":216,"target":"英勇投弹手","source":"英勇投弹手"},{"id":217,"target":"英勇投弹手","source":"未来守护者"},{"id":218,"target":"英勇投弹手","source":"岩雀"},{"id":219,"target":"未来守护者","source":"未来守护者"},{"id":220,"target":"未来守护者","source":"岩雀"},{"id":221,"target":"岩雀","source":"岩雀"},{"id":222,"target":"发条魔灵","source":"发条魔灵"},{"id":223,"target":"发条魔灵","source":"魔蛇之拥"},{"id":224,"target":"发条魔灵","source":"暗黑元首"},{"id":225,"target":"魔蛇之拥","source":"魔蛇之拥"},{"id":226,"target":"魔蛇之拥","source":"暗黑元首"},{"id":227,"target":"暗黑元首","source":"暗黑元首"},{"id":228,"target":"扭曲树精","source":"扭曲树精"},{"id":229,"target":"扭曲树精","source":"迷失之牙"},{"id":230,"target":"扭曲树精","source":"暮光之眼"},{"id":231,"target":"迷失之牙","source":"迷失之牙"},{"id":232,"target":"迷失之牙","source":"暮光之眼"},{"id":233,"target":"暮光之眼","source":"暮光之眼"},{"id":234,"target":"发条魔灵","source":"发条魔灵"},{"id":235,"target":"发条魔灵","source":"暗黑元首"},{"id":236,"target":"发条魔灵","source":"机械先驱"},{"id":237,"target":"暗黑元首","source":"暗黑元首"},{"id":238,"target":"暗黑元首","source":"机械先驱"},{"id":239,"target":"机械先驱","source":"机械先驱"},{"id":240,"target":"弗雷尔卓德之心","source":"弗雷尔卓德之心"},{"id":241,"target":"弗雷尔卓德之心","source":"牛头酋长"},{"id":242,"target":"弗雷尔卓德之心","source":"河流之王"},{"id":243,"target":"牛头酋长","source":"牛头酋长"},{"id":244,"target":"牛头酋长","source":"河流之王"},{"id":245,"target":"河流之王","source":"河流之王"},{"id":246,"target":"北地之怒","source":"北地之怒"},{"id":247,"target":"北地之怒","source":"虚空遁地兽"},{"id":248,"target":"北地之怒","source":"虚空掠夺者"},{"id":249,"target":"虚空遁地兽","source":"虚空遁地兽"},{"id":250,"target":"虚空遁地兽","source":"虚空掠夺者"},{"id":251,"target":"虚空掠夺者","source":"虚空掠夺者"},{"id":252,"target":"迷失之牙","source":"迷失之牙"},{"id":253,"target":"迷失之牙","source":"海洋之灾"},{"id":254,"target":"迷失之牙","source":"猩红收割者"},{"id":255,"target":"海洋之灾","source":"海洋之灾"},{"id":256,"target":"海洋之灾","source":"猩红收割者"},{"id":257,"target":"猩红收割者","source":"猩红收割者"},{"id":258,"target":"扭曲树精","source":"扭曲树精"},{"id":259,"target":"扭曲树精","source":"圣锤之毅"},{"id":260,"target":"扭曲树精","source":"暮光之眼"},{"id":261,"target":"圣锤之毅","source":"圣锤之毅"},{"id":262,"target":"圣锤之毅","source":"暮光之眼"},{"id":263,"target":"暮光之眼","source":"暮光之眼"},{"id":264,"target":"海洋之灾","source":"海洋之灾"},{"id":265,"target":"海洋之灾","source":"青钢影"},{"id":266,"target":"海洋之灾","source":"机械公敌"},{"id":267,"target":"青钢影","source":"青钢影"},{"id":268,"target":"青钢影","source":"机械公敌"},{"id":269,"target":"机械公敌","source":"机械公敌"},{"id":270,"target":"寒冰射手","source":"寒冰射手"},{"id":271,"target":"寒冰射手","source":"复仇之矛"},{"id":272,"target":"寒冰射手","source":"惩戒之箭"},{"id":273,"target":"复仇之矛","source":"复仇之矛"},{"id":274,"target":"复仇之矛","source":"惩戒之箭"},{"id":275,"target":"惩戒之箭","source":"惩戒之箭"},{"id":276,"target":"蜘蛛女皇","source":"蜘蛛女皇"},{"id":277,"target":"蜘蛛女皇","source":"盲僧"},{"id":278,"target":"蜘蛛女皇","source":"法外狂徒"},{"id":279,"target":"盲僧","source":"盲僧"},{"id":280,"target":"盲僧","source":"法外狂徒"},{"id":281,"target":"法外狂徒","source":"法外狂徒"},{"id":282,"target":"皮城女警","source":"皮城女警"},{"id":283,"target":"皮城女警","source":"戏命师"},{"id":284,"target":"皮城女警","source":"惩戒之箭"},{"id":285,"target":"戏命师","source":"戏命师"},{"id":286,"target":"戏命师","source":"惩戒之箭"},{"id":287,"target":"惩戒之箭","source":"惩戒之箭"},{"id":288,"target":"机械先驱","source":"机械先驱"},{"id":289,"target":"机械先驱","source":"猩红收割者"},{"id":290,"target":"机械先驱","source":"暮光之眼"},{"id":291,"target":"猩红收割者","source":"猩红收割者"},{"id":292,"target":"猩红收割者","source":"暮光之眼"},{"id":293,"target":"暮光之眼","source":"暮光之眼"},{"id":294,"target":"魂锁典狱长","source":"魂锁典狱长"},{"id":295,"target":"魂锁典狱长","source":"牛头酋长"},{"id":296,"target":"魂锁典狱长","source":"弗雷尔卓德之心"},{"id":297,"target":"牛头酋长","source":"牛头酋长"},{"id":298,"target":"牛头酋长","source":"弗雷尔卓德之心"},{"id":299,"target":"弗雷尔卓德之心","source":"弗雷尔卓德之心"},{"id":300,"target":"酒桶","source":"酒桶"},{"id":301,"target":"酒桶","source":"蜘蛛女皇"},{"id":302,"target":"酒桶","source":"虚空遁地兽"},{"id":303,"target":"蜘蛛女皇","source":"蜘蛛女皇"},{"id":304,"target":"蜘蛛女皇","source":"虚空遁地兽"},{"id":305,"target":"虚空遁地兽","source":"虚空遁地兽"},{"id":306,"target":"寒冰射手","source":"寒冰射手"},{"id":307,"target":"寒冰射手","source":"圣枪游侠"},{"id":308,"target":"寒冰射手","source":"复仇之矛"},{"id":309,"target":"圣枪游侠","source":"圣枪游侠"},{"id":310,"target":"圣枪游侠","source":"复仇之矛"},{"id":311,"target":"复仇之矛","source":"复仇之矛"},{"id":312,"target":"惩戒之箭","source":"惩戒之箭"},{"id":313,"target":"惩戒之箭","source":"寒冰射手"},{"id":314,"target":"惩戒之箭","source":"战争女神"},{"id":315,"target":"寒冰射手","source":"寒冰射手"},{"id":316,"target":"寒冰射手","source":"战争女神"},{"id":317,"target":"战争女神","source":"战争女神"},{"id":318,"target":"冰霜女巫","source":"冰霜女巫"},{"id":319,"target":"冰霜女巫","source":"沙漠皇帝"},{"id":320,"target":"冰霜女巫","source":"机械先驱"},{"id":321,"target":"沙漠皇帝","source":"沙漠皇帝"},{"id":322,"target":"沙漠皇帝","source":"机械先驱"},{"id":323,"target":"机械先驱","source":"机械先驱"},{"id":324,"target":"虚空掠夺者","source":"虚空掠夺者"},{"id":325,"target":"虚空掠夺者","source":"德玛西亚皇子"},{"id":326,"target":"虚空掠夺者","source":"北地之怒"},{"id":327,"target":"德玛西亚皇子","source":"德玛西亚皇子"},{"id":328,"target":"德玛西亚皇子","source":"北地之怒"},{"id":329,"target":"北地之怒","source":"北地之怒"},{"id":330,"target":"惩戒之箭","source":"惩戒之箭"},{"id":331,"target":"惩戒之箭","source":"寒冰射手"},{"id":332,"target":"惩戒之箭","source":"瘟疫之源"},{"id":333,"target":"寒冰射手","source":"寒冰射手"},{"id":334,"target":"寒冰射手","source":"瘟疫之源"},{"id":335,"target":"瘟疫之源","source":"瘟疫之源"},{"id":336,"target":"弗雷尔卓德之心","source":"弗雷尔卓德之心"},{"id":337,"target":"弗雷尔卓德之心","source":"河流之王"},{"id":338,"target":"弗雷尔卓德之心","source":"牛头酋长"},{"id":339,"target":"河流之王","source":"河流之王"},{"id":340,"target":"河流之王","source":"牛头酋长"},{"id":341,"target":"牛头酋长","source":"牛头酋长"},{"id":342,"target":"皮城女警","source":"皮城女警"},{"id":343,"target":"皮城女警","source":"惩戒之箭"},{"id":344,"target":"皮城女警","source":"戏命师"},{"id":345,"target":"惩戒之箭","source":"惩戒之箭"},{"id":346,"target":"惩戒之箭","source":"戏命师"},{"id":347,"target":"戏命师","source":"戏命师"},{"id":348,"target":"河流之王","source":"河流之王"},{"id":349,"target":"河流之王","source":"弗雷尔卓德之心"},{"id":350,"target":"河流之王","source":"牛头酋长"},{"id":351,"target":"弗雷尔卓德之心","source":"弗雷尔卓德之心"},{"id":352,"target":"弗雷尔卓德之心","source":"牛头酋长"},{"id":353,"target":"牛头酋长","source":"牛头酋长"},{"id":354,"target":"仙灵女巫","source":"仙灵女巫"},{"id":355,"target":"仙灵女巫","source":"弗雷尔卓德之心"},{"id":356,"target":"仙灵女巫","source":"幻翎"},{"id":357,"target":"弗雷尔卓德之心","source":"弗雷尔卓德之心"},{"id":358,"target":"弗雷尔卓德之心","source":"幻翎"},{"id":359,"target":"幻翎","source":"幻翎"},{"id":360,"target":"战争女神","source":"战争女神"},{"id":361,"target":"战争女神","source":"戏命师"},{"id":362,"target":"战争女神","source":"探险家"},{"id":363,"target":"戏命师","source":"戏命师"},{"id":364,"target":"戏命师","source":"探险家"},{"id":365,"target":"探险家","source":"探险家"},{"id":366,"target":"弗雷尔卓德之心","source":"弗雷尔卓德之心"},{"id":367,"target":"弗雷尔卓德之心","source":"星界游神"},{"id":368,"target":"弗雷尔卓德之心","source":"魂锁典狱长"},{"id":369,"target":"星界游神","source":"星界游神"},{"id":370,"target":"星界游神","source":"魂锁典狱长"},{"id":371,"target":"魂锁典狱长","source":"魂锁典狱长"},{"id":372,"target":"弗雷尔卓德之心","source":"弗雷尔卓德之心"},{"id":373,"target":"弗雷尔卓德之心","source":"牛头酋长"},{"id":374,"target":"弗雷尔卓德之心","source":"魂锁典狱长"},{"id":375,"target":"牛头酋长","source":"牛头酋长"},{"id":376,"target":"牛头酋长","source":"魂锁典狱长"},{"id":377,"target":"魂锁典狱长","source":"魂锁典狱长"},{"id":378,"target":"圣锤之毅","source":"圣锤之毅"},{"id":379,"target":"圣锤之毅","source":"扭曲树精"},{"id":380,"target":"圣锤之毅","source":"深海泰坦"},{"id":381,"target":"扭曲树精","source":"扭曲树精"},{"id":382,"target":"扭曲树精","source":"深海泰坦"},{"id":383,"target":"深海泰坦","source":"深海泰坦"},{"id":384,"target":"法外狂徒","source":"法外狂徒"},{"id":385,"target":"法外狂徒","source":"虚空遁地兽"},{"id":386,"target":"法外狂徒","source":"盲僧"},{"id":387,"target":"虚空遁地兽","source":"虚空遁地兽"},{"id":388,"target":"虚空遁地兽","source":"盲僧"},{"id":389,"target":"盲僧","source":"盲僧"},{"id":390,"target":"机械公敌","source":"机械公敌"},{"id":391,"target":"机械公敌","source":"深海泰坦"},{"id":392,"target":"机械公敌","source":"迷失之牙"},{"id":393,"target":"深海泰坦","source":"深海泰坦"},{"id":394,"target":"深海泰坦","source":"迷失之牙"},{"id":395,"target":"迷失之牙","source":"迷失之牙"},{"id":396,"target":"巨魔之王","source":"巨魔之王"},{"id":397,"target":"巨魔之王","source":"天启者"},{"id":398,"target":"巨魔之王","source":"虚空先知"},{"id":399,"target":"天启者","source":"天启者"},{"id":400,"target":"天启者","source":"虚空先知"},{"id":401,"target":"虚空先知","source":"虚空先知"},{"id":402,"target":"弗雷尔卓德之心","source":"弗雷尔卓德之心"},{"id":403,"target":"弗雷尔卓德之心","source":"牛头酋长"},{"id":404,"target":"弗雷尔卓德之心","source":"仙灵女巫"},{"id":405,"target":"牛头酋长","source":"牛头酋长"},{"id":406,"target":"牛头酋长","source":"仙灵女巫"},{"id":407,"target":"仙灵女巫","source":"仙灵女巫"},{"id":408,"target":"虚空掠夺者","source":"虚空掠夺者"},{"id":409,"target":"虚空掠夺者","source":"蜘蛛女皇"},{"id":410,"target":"虚空掠夺者","source":"狂战士"},{"id":411,"target":"蜘蛛女皇","source":"蜘蛛女皇"},{"id":412,"target":"蜘蛛女皇","source":"狂战士"},{"id":413,"target":"狂战士","source":"狂战士"},{"id":414,"target":"战争女神","source":"战争女神"},{"id":415,"target":"战争女神","source":"戏命师"},{"id":416,"target":"战争女神","source":"惩戒之箭"},{"id":417,"target":"戏命师","source":"戏命师"},{"id":418,"target":"戏命师","source":"惩戒之箭"},{"id":419,"target":"惩戒之箭","source":"惩戒之箭"},{"id":420,"target":"德玛西亚皇子","source":"德玛西亚皇子"},{"id":421,"target":"德玛西亚皇子","source":"北地之怒"},{"id":422,"target":"德玛西亚皇子","source":"盲僧"},{"id":423,"target":"北地之怒","source":"北地之怒"},{"id":424,"target":"北地之怒","source":"盲僧"},{"id":425,"target":"盲僧","source":"盲僧"},{"id":426,"target":"法外狂徒","source":"法外狂徒"},{"id":427,"target":"法外狂徒","source":"盲僧"},{"id":428,"target":"法外狂徒","source":"蜘蛛女皇"},{"id":429,"target":"盲僧","source":"盲僧"},{"id":430,"target":"盲僧","source":"蜘蛛女皇"},{"id":431,"target":"蜘蛛女皇","source":"蜘蛛女皇"},{"id":432,"target":"仙灵女巫","source":"仙灵女巫"},{"id":433,"target":"仙灵女巫","source":"天启者"},{"id":434,"target":"仙灵女巫","source":"弗雷尔卓德之心"},{"id":435,"target":"天启者","source":"天启者"},{"id":436,"target":"天启者","source":"弗雷尔卓德之心"},{"id":437,"target":"弗雷尔卓德之心","source":"弗雷尔卓德之心"},{"id":438,"target":"惩戒之箭","source":"惩戒之箭"},{"id":439,"target":"惩戒之箭","source":"战争女神"},{"id":440,"target":"惩戒之箭","source":"圣枪游侠"},{"id":441,"target":"战争女神","source":"战争女神"},{"id":442,"target":"战争女神","source":"圣枪游侠"},{"id":443,"target":"圣枪游侠","source":"圣枪游侠"},{"id":444,"target":"虚空遁地兽","source":"虚空遁地兽"},{"id":445,"target":"虚空遁地兽","source":"酒桶"},{"id":446,"target":"虚空遁地兽","source":"法外狂徒"},{"id":447,"target":"酒桶","source":"酒桶"},{"id":448,"target":"酒桶","source":"法外狂徒"},{"id":449,"target":"法外狂徒","source":"法外狂徒"},{"id":450,"target":"河流之王","source":"河流之王"},{"id":451,"target":"河流之王","source":"天启者"},{"id":452,"target":"河流之王","source":"弗雷尔卓德之心"},{"id":453,"target":"天启者","source":"天启者"},{"id":454,"target":"天启者","source":"弗雷尔卓德之心"},{"id":455,"target":"弗雷尔卓德之心","source":"弗雷尔卓德之心"},{"id":456,"target":"惩戒之箭","source":"惩戒之箭"},{"id":457,"target":"惩戒之箭","source":"戏命师"},{"id":458,"target":"惩戒之箭","source":"符文法师"},{"id":459,"target":"戏命师","source":"戏命师"},{"id":460,"target":"戏命师","source":"符文法师"},{"id":461,"target":"符文法师","source":"符文法师"},{"id":462,"target":"虚空遁地兽","source":"虚空遁地兽"},{"id":463,"target":"虚空遁地兽","source":"法外狂徒"},{"id":464,"target":"虚空遁地兽","source":"酒桶"},{"id":465,"target":"法外狂徒","source":"法外狂徒"},{"id":466,"target":"法外狂徒","source":"酒桶"},{"id":467,"target":"酒桶","source":"酒桶"},{"id":468,"target":"魂锁典狱长","source":"魂锁典狱长"},{"id":469,"target":"魂锁典狱长","source":"星界游神"},{"id":470,"target":"魂锁典狱长","source":"虚空先知"},{"id":471,"target":"星界游神","source":"星界游神"},{"id":472,"target":"星界游神","source":"虚空先知"},{"id":473,"target":"虚空先知","source":"虚空先知"},{"id":474,"target":"虚空掠夺者","source":"虚空掠夺者"},{"id":475,"target":"虚空掠夺者","source":"蜘蛛女皇"},{"id":476,"target":"虚空掠夺者","source":"皮城执法官"},{"id":477,"target":"蜘蛛女皇","source":"蜘蛛女皇"},{"id":478,"target":"蜘蛛女皇","source":"皮城执法官"},{"id":479,"target":"皮城执法官","source":"皮城执法官"},{"id":480,"target":"弗雷尔卓德之心","source":"弗雷尔卓德之心"},{"id":481,"target":"弗雷尔卓德之心","source":"仙灵女巫"},{"id":482,"target":"弗雷尔卓德之心","source":"河流之王"},{"id":483,"target":"仙灵女巫","source":"仙灵女巫"},{"id":484,"target":"仙灵女巫","source":"河流之王"},{"id":485,"target":"河流之王","source":"河流之王"},{"id":486,"target":"弗雷尔卓德之心","source":"弗雷尔卓德之心"},{"id":487,"target":"弗雷尔卓德之心","source":"河流之王"},{"id":488,"target":"弗雷尔卓德之心","source":"牛头酋长"},{"id":489,"target":"河流之王","source":"河流之王"},{"id":490,"target":"河流之王","source":"牛头酋长"},{"id":491,"target":"牛头酋长","source":"牛头酋长"},{"id":492,"target":"河流之王","source":"河流之王"},{"id":493,"target":"河流之王","source":"赏金猎人"},{"id":494,"target":"河流之王","source":"天启者"},{"id":495,"target":"赏金猎人","source":"赏金猎人"},{"id":496,"target":"赏金猎人","source":"天启者"},{"id":497,"target":"天启者","source":"天启者"},{"id":498,"target":"荆棘之兴","source":"荆棘之兴"},{"id":499,"target":"荆棘之兴","source":"荆棘之兴"},{"id":500,"target":"弗雷尔卓德之心","source":"弗雷尔卓德之心"},{"id":501,"target":"弗雷尔卓德之心","source":"仙灵女巫"},{"id":502,"target":"弗雷尔卓德之心","source":"河流之王"},{"id":503,"target":"仙灵女巫","source":"仙灵女巫"},{"id":504,"target":"仙灵女巫","source":"河流之王"},{"id":505,"target":"河流之王","source":"河流之王"},{"id":506,"target":"弗雷尔卓德之心","source":"弗雷尔卓德之心"},{"id":507,"target":"弗雷尔卓德之心","source":"牛头酋长"},{"id":508,"target":"弗雷尔卓德之心","source":"河流之王"},{"id":509,"target":"牛头酋长","source":"牛头酋长"},{"id":510,"target":"牛头酋长","source":"河流之王"},{"id":511,"target":"河流之王","source":"河流之王"},{"id":512,"target":"虚空先知","source":"虚空先知"},{"id":513,"target":"虚空先知","source":"天启者"},{"id":514,"target":"天启者","source":"天启者"},{"id":515,"target":"深海泰坦","source":"深海泰坦"},{"id":516,"target":"蜘蛛女皇","source":"蜘蛛女皇"},{"id":517,"target":"蜘蛛女皇","source":"虚空遁地兽"},{"id":518,"target":"蜘蛛女皇","source":"狂野女猎手"},{"id":519,"target":"虚空遁地兽","source":"虚空遁地兽"},{"id":520,"target":"虚空遁地兽","source":"狂野女猎手"},{"id":521,"target":"狂野女猎手","source":"狂野女猎手"},{"id":522,"target":"荆棘之兴","source":"荆棘之兴"},{"id":523,"target":"虚空遁地兽","source":"虚空遁地兽"},{"id":524,"target":"虚空遁地兽","source":"酒桶"},{"id":525,"target":"虚空遁地兽","source":"德玛西亚皇子"},{"id":526,"target":"酒桶","source":"酒桶"},{"id":527,"target":"酒桶","source":"德玛西亚皇子"},{"id":528,"target":"德玛西亚皇子","source":"德玛西亚皇子"},{"id":529,"target":"荒漠屠夫","source":"荒漠屠夫"},{"id":530,"target":"荒漠屠夫","source":"未来守护者"},{"id":531,"target":"荒漠屠夫","source":"深海泰坦"},{"id":532,"target":"未来守护者","source":"未来守护者"},{"id":533,"target":"未来守护者","source":"深海泰坦"},{"id":534,"target":"深海泰坦","source":"深海泰坦"},{"id":535,"target":"弗雷尔卓德之心","source":"弗雷尔卓德之心"},{"id":536,"target":"弗雷尔卓德之心","source":"牛头酋长"},{"id":537,"target":"弗雷尔卓德之心","source":"星界游神"},{"id":538,"target":"牛头酋长","source":"牛头酋长"},{"id":539,"target":"牛头酋长","source":"星界游神"},{"id":540,"target":"星界游神","source":"星界游神"},{"id":541,"target":"法外狂徒","source":"法外狂徒"},{"id":542,"target":"法外狂徒","source":"傲之追猎者"},{"id":543,"target":"傲之追猎者","source":"傲之追猎者"},{"id":544,"target":"荆棘之兴","source":"荆棘之兴"},{"id":545,"target":"荆棘之兴","source":"荆棘之兴"},{"id":546,"target":"荆棘之兴","source":"荆棘之兴"},{"id":547,"target":"皮城女警","source":"皮城女警"},{"id":548,"target":"荆棘之兴","source":"荆棘之兴"},{"id":549,"target":"荆棘之兴","source":"荆棘之兴"},{"id":550,"target":"荆棘之兴","source":"荆棘之兴"},{"id":551,"target":"荆棘之兴","source":"荆棘之兴"},{"id":552,"target":"逆羽","source":"逆羽"},{"id":553,"target":"逆羽","source":"惩戒之箭"},{"id":554,"target":"逆羽","source":"探险家"},{"id":555,"target":"惩戒之箭","source":"惩戒之箭"},{"id":556,"target":"惩戒之箭","source":"探险家"},{"id":557,"target":"探险家","source":"探险家"},{"id":558,"target":"九尾妖狐","source":"九尾妖狐"},{"id":559,"target":"九尾妖狐","source":"机械先驱"},{"id":560,"target":"九尾妖狐","source":"沙漠皇帝"},{"id":561,"target":"机械先驱","source":"机械先驱"},{"id":562,"target":"机械先驱","source":"沙漠皇帝"},{"id":563,"target":"沙漠皇帝","source":"沙漠皇帝"},{"id":564,"target":"戏命师","source":"戏命师"},{"id":565,"target":"戏命师","source":"探险家"},{"id":566,"target":"戏命师","source":"圣枪游侠"},{"id":567,"target":"探险家","source":"探险家"},{"id":568,"target":"探险家","source":"圣枪游侠"},{"id":569,"target":"圣枪游侠","source":"圣枪游侠"},{"id":570,"target":"荆棘之兴","source":"荆棘之兴"}]};
+
+    
+    graph.nodes.forEach(function (node) {
+            
+            console.log((parseFloat(node.win)*50*0.7+node.value*10*0.3)*0.8)
+            node.value = node.value;
+            node.symbolSize =(parseFloat(node.win)*50*0.7+node.value*10*0.3)*0.5;
+            node.label = {
+                normal: {
+                    show: node.symbolSize > 0
+                }
+            };
+            node.itemStyle ={
+                normal: {     
+                            show: node.symbolSize > 25,
+                            color:randomColor({
+                                luminosity: 'light',
+                                hue: 'blue'
+                            })
+                        }
+            };
+            node.x = node.y = null;
+            node.id=node.name;
+            node.draggable = true;
+        });
+
+
+        option = {
+            backgroundColor:'black',
+            title: {
+                text: '英雄图谱',
+                subtext: 'Default layout',
+                top: 'bottom',
+                left: 'right'
+            },
+            tooltip: {},
+            legend: [{
+                // selectedMode: 'single',
+                data: categories.map(function (a) {
+                    return a.name;
+                })
+            }],
+            animationDuration: 1500,
+            animationEasingUpdate: 'quinticInOut',
+            series: [
+                {
+                    name: '英雄',
+                    type: 'graph',
+                    layout: 'force',
+                    data: graph.nodes,
+                    links: graph.links,
+                    roam: true,
+                    focusNodeAdjacency: true,
+                    itemStyle: {
+                        normal: {   
+                            shadowBlur: 10,
+                            shadowColor: 'rgba(0, 0, 0, 0.3)'
+                        }
+                    },
+                    label: {
+                        position: '',
+                        formatter: '{b}'
+                    },
+                    lineStyle: {
+                        color: 'source',
+                        curveness: 0.3
+                    },
+                    emphasis: {
+                        lineStyle: {
+                            width: 10
+                        } 
+                    }
+                }
+            ]
+        };
+
+        myChart.setOption(option);
+
+        var dataIndex = null;
+
+        myChart.on('mouseout', function (params) {
+            if (dataIndex) {
+                myChart.dispatchAction({
+                    type: 'focusNodeAdjacency',
+                    dataIndex: dataIndex
+                });
+            }
+
+
+        });
+
+
+
+         myChart.on("click", function (params) {
+
+            if (params.dataType == 'node') {
+                dataIndex = params.dataIndex;
+            }
+
+         });
+
+    </script>
+</body>
+
+</html>
